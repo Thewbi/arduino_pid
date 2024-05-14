@@ -1,3 +1,5 @@
+// for fake ch340 https://github.com/SHWotever/FakeCH340DriverFixer/releases/tag/1.0
+
 #include <util/atomic.h> // For the ATOMIC_BLOCK macro
 
 #define ENCA 2 // YELLOW (Signal leitung (Impuls des Motors 11)) (Bewegung)

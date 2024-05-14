@@ -73,6 +73,8 @@ eBay: https://www.ebay.de/itm/166471920023?mkcid=16&mkevt=1&mkrid=707-127634-235
 
 The JGB-520 comes with an encoder built in.
 
+https://de.aliexpress.com/item/32839896831.html?gatewayAdapt=glo2deu
+
 The wiring does supply power to the motor:
 
 - Red Cable = +VCC motor (12V max)
@@ -80,13 +82,13 @@ The wiring does supply power to the motor:
 
 It also supplies power to the encoder
 
-- Yellow = +VCC encoder (5V)
-- Black = GND encoder
+- Blue - +VCC encoder (3V3 or 5V, maybe use 3V3) - Arduino Pin 3.3V
+- Black = GND encoder - Arduino Pin GND
 
 The signals of the encoder are
 
-- Green - Encoder Wire A (interrupt)
-- Blue - Encoder Wire B (direction)
+- Yellow = Encoder Wire B (direction) - Arduino Pin 2
+- Green - Encoder Wire A (interrupt) - Arduino Pin 3
 
 
 ## Reading informaton from the JGB-520 encoder
@@ -115,4 +117,22 @@ void readEncoder() {
 Inside the rising edge interrupt handler attached to encoder wire A (green), the value of encoder wire B (blue) is read.
 Looking at the state of wire B during an interrupt yields the following insight: If B is positive, the motor turned into one direction, 
 if B is negative, the motor turned into the other direction by a single increment.
+
+When the sketch is uploaded and running and the motor has power (between 0V and 12V), open the serial monitor and set it to 9600 baud.
+The serial monitor will display the current integrated/accumulated/summed up encoder count.
+You can see this count go up or down, depending on in which polarity voltage is connected to the motor.
+
+Sample output:
+
+```
+-2427
+-2427
+...
+-2427
+-2426
+-2426
+-2425
+-2424
+...
+```
 
