@@ -23,4 +23,4 @@ It is a 12V DC motor that goes up to 1000 RPM according to the label on the hous
 
 eBay: https://www.ebay.de/itm/166471920023?mkcid=16&mkevt=1&mkrid=707-127634-2357-0&ssspo=zsyxprhrtzy&sssrc=2047675&ssuid=plgx2AkNTy-&widget_ver=artemis&media=COPY
 
-![JGB-520](images/s-l1600.jpg)
+![JGB-520](images/s-l1600.jpg =250x)
