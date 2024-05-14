@@ -87,14 +87,14 @@ It also supplies power to the encoder
 
 The signals of the encoder are
 
-- Yellow = Encoder Wire B (direction) - Arduino Pin 2
-- Green - Encoder Wire A (interrupt) - Arduino Pin 3
+- Yellow = Encoder Wire A (interrupt) - Arduino Pin 2
+- Green - Encoder Wire B (direction) - Arduino Pin 3
 
 
 ## Reading informaton from the JGB-520 encoder
 
-The JGB-520 will output a signal on the encoder wire A (green), whenever it wants to trigger an interrupt.
-The strategy in the encoder_test sketch is to put a interupt on the rising edge of encoder wire A (green).
+The JGB-520 will output a signal on the encoder wire A (yellow), whenever it wants to trigger an interrupt.
+The strategy in the encoder_test sketch is to put a interupt on the rising edge of encoder wire A (yellow).
 
 ```
 void setup() {
@@ -114,8 +114,8 @@ void readEncoder() {
 }
 ```
 
-Inside the rising edge interrupt handler attached to encoder wire A (green), the value of encoder wire B (blue) is read.
-Looking at the state of wire B during an interrupt yields the following insight: If B is positive, the motor turned into one direction, 
+Inside the rising edge interrupt handler attached to encoder wire A (yellow), the value of encoder wire B (green) is read.
+Looking at the state of wire B (green) during an interrupt yields the following insight: If B is positive, the motor turned into one direction, 
 if B is negative, the motor turned into the other direction by a single increment.
 
 When the sketch is uploaded and running and the motor has power (between 0V and 12V), open the serial monitor and set it to 9600 baud.
@@ -135,4 +135,17 @@ Sample output:
 -2424
 ...
 ```
+
+## Shortcommings of this Solution
+
+For a closed loop for velocity control, PID controller implemented on the arduino has to be able to control the voltage that
+is feed into the motor. Currently the arduino is merely used to read the encoder values. A way to control voltage is needed.
+
+Currently there is no code that implements a PID controller.
+
+## Outlook
+
+To enable the arduino code to control the voltage, the arduino motor shield v3 is used in the next example.
+
+A PID controller is implemented in some later example.
 
