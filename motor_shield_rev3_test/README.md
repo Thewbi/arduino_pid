@@ -12,7 +12,18 @@ Speed and direction of rotation can be controlled from within an arduino sketch.
 The Arduino motor shield also has a current sensing function which allows us to build a closed loop taking current as target value
 or limit a motor circuit based on current.
 
-## Cuttin Vin Connect
+This example does not make use of the motor encoder. It is purely controlling the voltage supplied to the motor using an arduino sketch.
+
+After the test, it is validated that:
+
+- the motor shield works
+- the motor shield has proper connection to the arduino
+- the PWM signal is a value between 0 and 255 which can be used to limit the voltage provided by the external power supply based on a value set in a arduino sketch
+- the motor works
+- the morot is able to function using a voltage controlled via PWM
+
+
+## Cuttin Vin Connect on the Arduino Motor Shield rev3
 
 On the bottom of the board, there is a bridge between two solder pads called "Vin Connect".
 If this bridge is connected (which it initially is in the boards factory condition) then the voltage
@@ -24,6 +35,28 @@ I the case of the JGB-520 motor used in this example this becomes a problem sinc
 to operate. 12V damages the arduino. Therefore, the solder bridge is cut using a scalpel or a box cutter. Alternatively
 the solder bridge may be removed using a soldering iron. In any case, to make sure that the connection between the external
 powersource and the arduino is severed, use a measurring device in continuite mode and check for a lack of continuity.
+
+## What is PWM
+
+PWM stands for pulse width modulation. The width of a pulse can be controlled.
+
+For DC motors, the motor's velocity is directly correlated to the input voltage and the direction to the polarity of that voltage.
+
+In motor control for DC motors, the problem to solve is how to supply varying voltage levels to the motor in order to control it's velocity 
+(= the speed at which it turns the shaft).
+
+One way would be to have a variable resistor (similar to a potentiometer) which is able to drop voltage given an input voltage so that only
+a fraction of the input voltage makes it to the motor.
+
+Another idea is to not drop any voltage from the input voltage but to just completely disconnect the input voltage from the motor for 
+certain fractions of time. If the input voltage is 12V and we only connect the motor 50% of the time over very short timeslices, the motor
+sees an effective voltage of 6V.
+
+This is exactly the idea of PWM. PWM is rapidly connecting and disconnecting the voltage line. From within the source code, the programmer
+defines the ratio between on and off periods in the range from 0% to 100%. In the arduino sketch 0% correlates to a PWM value of 0 and 
+100% to a value of 255.
+
+PWM for the voltage is feature of the arduino motor shield rev3. For port A, pin 3 is used for PWM. For port B pin 11 is used.
 
 ## Wiring
 

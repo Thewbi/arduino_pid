@@ -1,7 +1,9 @@
 # Introduction
 
 The purpose of this test is to get to know the encoder and it's output in isolation from all other features of a PID control system.
-No PID controller is involved. After the test, it is validated that:
+No PID controller is involved. 
+
+After the test, it is validated that:
 
 - the power supply works
 - the motor works
