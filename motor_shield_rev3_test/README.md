@@ -90,7 +90,8 @@ int brakePin = 9;
 // boolean to switch direction
 bool directionState;
 
-//write a value between 0-255 to set the work duty.
+// write a value between 0-255 to set the work duty.
+// Assumption: input voltage is 12V DC
 //int pwm = 50; // +- 2.4V
 //int pwm = 80; // +- 3.8V
 int pwm = 255; // +- 11.5V
@@ -121,6 +122,7 @@ void loop() {
 
     // write a high state to the direction pin (13)
     digitalWrite(directionPin, HIGH);
+
   }
 
   //
