@@ -34,20 +34,19 @@ The encoder is attached to the shaft and it will return signals when the shaft r
 is proportional to the motor speed, most encoders are constructed more simple. The encoder has two wires and it will change
 the voltage on the wires producing flanks as the shaft turns.
 
-It is the responsibilty of the engineer to convert the flank signals into meaningful information. The strategy in the encoder_test sketch
-is to put a interupt on the rising edge of encoder wire A. Inside the rising edge interrupt handler, the value of encoder wire B is read.
+It is the responsibilty of the engineer to convert the flank signals into meaningful information. 
 
-Given the state of wire A which has to be high as otherwise the interrupt would not have been triggered, looking at the state of wire B 
-yields the following insight: If B is positive, the motor turned into one direction, if B is negative, the motor turned into the other direction.
+Different encoders use different output signaling. The encoder used with the JGB-520 uses one wire for sending interrupt 
+signals and another wire for the direction that the motor turns in.
 
-Signals on wire A and wire B are a constant offset apart and hence they will form a very specific pattern. 
+Other encoders might just send flanks on both wires. Then Signals on wire A and wire B are a constant offset apart and hence they will form a very specific pattern. 
 Looking at a diagram such as https://www.waycon.de/produkte/encoder-winkelgeber/messprinzip-encoder-drehgeber/ 
 the order in which signals on A and B go high is specific to the direction in which the motor turns. This means that the interrupt
 handler can determine that the shaft has been turned by an increment and in which direction this incremental turn has taken place.
 
 Different encoders come in different resolutions. If you know the resolution of your encoder (say 10 increments per full 360 degree rotation 
 of the shaft) then you know the rotation angle of the motor. If you somehow keep track of time also, then you can compute the rotational
-velocity (also just called the motor's velocity) by diving the rotational angle increment by time similar how you would divide distance
+velocity (also just called the motor's velocity) by dividing the rotational angle increment by time similar how you would divide distance
 by time to arrive at directional velocity.
 
 This is how an encoder helps you figure out the current speed of the motor. (Given the voltage that produces the speed, this is the 
@@ -57,13 +56,11 @@ By just keeping track of the rotational increments and integrating (summing) tho
 of the motor based on the situation where power has been switched on.
 
 To turn a unknown relative position into a position relative to some boundary (a wall of your room/flat/building) how about make
-the motor turn slowely until it hits a barrier and then declaring this position as absolute position zero?
+the motor turn slowely until the system hits a barrier and then declaring this position as absolute position zero?
 
 Given the encoder, you can start controlling the speed of your motor and defining positions in space.
- 
 
-
-## Motor and Wiring
+## The Motor used
 
 The motor used is the JGB-520.
 It is a 12V DC motor that goes up to 1000 RPM according to the label on the housing.
@@ -73,4 +70,49 @@ eBay: https://www.ebay.de/itm/166471920023?mkcid=16&mkevt=1&mkrid=707-127634-235
 <img src="images/s-l1600.jpg" width="200" />
 
 ## Wiring
+
+The JGB-520 comes with an encoder built in.
+
+The wiring does supply power to the motor:
+
+- Red Cable = +VCC motor (12V max)
+- White Cable = GND motor
+
+It also supplies power to the encoder
+
+- Yellow = +VCC encoder (5V)
+- Black = GND encoder
+
+The signals of the encoder are
+
+- Green - Encoder Wire A (interrupt)
+- Blue - Encoder Wire B (direction)
+
+
+## Reading informaton from the JGB-520 encoder
+
+The JGB-520 will output a signal on the encoder wire A (green), whenever it wants to trigger an interrupt.
+The strategy in the encoder_test sketch is to put a interupt on the rising edge of encoder wire A (green).
+
+```
+void setup() {
+  Serial.begin(9600);
+  pinMode(ENCA, INPUT);
+  pinMode(ENCB, INPUT);
+  attachInterrupt(digitalPinToInterrupt(ENCA), readEncoder, RISING);
+}
+
+void readEncoder() {
+  int b = digitalRead(ENCB);
+  if (b > 0) {
+    posi++;
+  } else {
+    posi--;
+  }
+}
+```
+
+Inside the rising edge interrupt handler attached to encoder wire A (green), the value of encoder wire B (blue) is read.
+Looking at the state of wire B during an interrupt yields the following insight: If B is positive, the motor turned into one direction, 
+if B is negative, the motor turned into the other direction by a single increment.
 
