@@ -90,7 +90,7 @@ The signals of the encoder are
 - Yellow = Encoder Wire A (interrupt) - Arduino Pin 2
 - Green - Encoder Wire B (direction) - Arduino Pin 3
 
-<img src="images/wiring.png" width="600" />
+<img src="images/wiring.png" width="800" />
 
 
 ## Reading informaton from the JGB-520 encoder
